@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Pie Chart";
+}
+
+<div id="chartContainer"></div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var chart = new CanvasJS.Chart("chartContainer", {
+                title: {
+                    text: "Chart of Single User"
+                },
+                animationEnabled: true,
+                legend: {
+                    verticalAlign: "center",
+                    horizontalAlign: "left",
+                    fontSize: 20,
+                    fontFamily: "Helvetica"
+                },
+                theme: "light2",
+                data: [
+                    {
+                        type: "pie",
+                        indexLabelFontFamily: "Garamond",
+                        indexLabelFontSize: 20,
+                        indexLabel: "{label} {y}%",
+                        startAngle: -20,
+                        showInLegend: true,
+                        toolTipContent: "{legendText} {y}%",
+                        dataPoints: [
+                            { y: 72.48, legendText: "Submission", label: "Submission" },
+                            { y: 10.39, legendText: "Location", label: "Location" },
+                            { y: 7.78, legendText: "Policy Details Page", label: "Policy Details Page" },
+                            { y: 7.51, legendText: "Buildings Details Page", label: "Buildings Details Page" },
+                            { y: 1.84, legendText: "UW Questions Page", label: "UW Questions Page" }
+                        ]
+                    }
+                ]
+            });
+            chart.render();
+        });
+    </script>
+}
