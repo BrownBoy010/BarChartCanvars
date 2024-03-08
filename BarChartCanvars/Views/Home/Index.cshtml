@@ -1,4 +1,201 @@
-﻿@* @{
+﻿@{
+    ViewData["Title"] = "Top User Interactions";
+}
+
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+<div id="chartContainer"></div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('@Url.Action("GetTopUserIds", "Home")')
+                .then(response => response.json())
+                .then(data => {
+                    var userInteractions = data;
+                    var dataPoints = [];
+
+                    for (var userId in userInteractions) {
+                        var pageUrl = userInteractions[userId];
+                        var numericValue = 1;
+
+                        if (pageUrl === 'http://localhost:24019/ProductList') {
+                            numericValue = 2;
+                        } else if (pageUrl === 'http://localhost:24019/ShoppingCart') {
+                            numericValue = 3;
+                        } else if (pageUrl.startsWith('http://localhost:24019/checkout')) {
+                            numericValue = 4;
+                        }
+
+                        dataPoints.push({ label: userId, y: numericValue });
+                    }
+                    console.log('dataPointsss ', dataPoints);
+
+                    var chart = new CanvasJS.Chart("chartContainer", {
+                        width: 600,
+                        height: 400,
+                        theme: "light2",
+                        animationEnabled: true,
+                        title: {
+                            text: "Top User Interactions"
+                        },
+                        axisX: {
+                            title: "User ID"
+                        },
+                        axisY: {
+                            title: "Page URL",
+                            labelFormatter: function (e) {
+                                if (e.value === 1) {
+                                    return "Home";
+                                } else if (e.value === 2) {
+                                    return "ProductList";
+                                } else if (e.value === 3) {
+                                    return "ShoppingCart";
+                                } else if (e.value === 4) {
+                                    return "Checkout";
+                                } else {
+                                    return "";
+                                }
+                                // var pageNames = ["Home", "ProductList", "ShoppingCart", "Checkout"];
+                                // return pageNames[e.value - 1];
+                            }
+                        },
+                        data: [
+                            {
+                                type: "column",
+                                dataPoints: dataPoints
+                            }
+                        ]
+                    });
+                    chart.render();
+                })
+                .catch(error => {
+                    console.error('Error fetching top user interactions:', error);
+                });
+        });
+
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @{
+    ViewData["Title"] = "Top User Interactions";
+}
+
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+<div id="chartContainer"></div>
+
+@section Scripts {
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('@Url.Action("GetTopUserIds", "Home")')
+                .then(response => response.json())
+                .then(data => {
+                    var topUserIds = data;
+                    console.log('length : ', data.length);
+                    console.log('length : ', topUserIds.length);
+                    console.log('topUserIds ', topUserIds);
+                   
+                    var dataPoints = [];
+                    for (var i = 0; i < topUserIds.length; i++) {                           
+                        var userId = toptopUserIds[i].userId;
+                        var pageUrl = toptopUserIds[i].pageUrl;
+
+                        dataPoints.push({ label: userId, y: 3 })
+                        }
+            // console.log('dataPointsss ', dataPoints);
+                    // for (var key in data) {
+                    //     dataPoints.push({ label: key, y: data[key] });
+                    // }
+                    console.log('dataPoints ', dataPoints);
+                    // for (var i = 0; i < topUserIds.length; i++) {
+                    //     dataPoints.push({ label: topUserIds[i + 1], y: topUserIds[i] });
+                    // }
+                    
+                    var chart = new CanvasJS.Chart("chartContainer", {
+                        width: 600,
+                        height: 400,
+                        theme: "light2",
+                        animationEnabled: true,
+                        title: {
+                            text: "Top User IDs"
+                        },
+                        axisX: {
+                            title: "User ID"
+                        },
+                        axisY: {
+                            title: "",
+                            labelFormatter: function (e) {
+                                //return e;
+                                if (e.value === 1) {
+                                    return "Home";
+                                } else if (e.value === 2) {
+                                    return "ProductList";
+                                } else if (e.value === 3) {
+                                    return "ShoppingCart";
+                                } else if (e.value === 4) {
+                                    return "Checkout";
+                                } else {
+                                    return "";
+                                }
+                            }
+                        },
+                        data: [
+                            {
+                                type: "column",
+                                dataPoints: dataPoints
+                            }
+                        ]
+                    });
+                    chart.render();
+                })
+                .catch(error => {
+                    console.error('Error fetching top user IDs:', error);
+                });
+        });
+    </script>
+} *@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @{
     ViewData["Title"] = "Home";
 }
 
@@ -62,75 +259,17 @@
     </script>
 } *@
 
-@{
-    ViewData["Title"] = "Home";
-}
-
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-
-<div id="chartContainer"></div>
-
-@section Scripts {
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-
-            fetch('@Url.Action("GetTopUserIds", "Home")')
-                .then(response => response.json())
-                .then(data => {
-                    var topUserIds = data;
-
-                    var dataPoints = [];
-                    for (var i = 0; i < topUserIds.length; i++) {
-                        dataPoints.push({ label: topUserIds[i], y: i + 1 });
-                    }
-
-                    var chart = new CanvasJS.Chart("chartContainer", {
-                        width: 800,
-                        height: 500,
-                        theme: "light2",
-                        animationEnabled: true,
-                        title: {
-                            text: "Simple Column Chart"
-                        },
-                        subtitles: [
-                            { text: "" }
-                        ],
-                        axisY: {
-                            title: "",
-                            labelFormatter: function (e) {
-                                if (e.value === 1) {
-                                    return "Quote Wizard";
-                                } else if (e.value === 2) {
-                                    return "Policy Details";
-                                } else if (e.value === 3) {
-                                    return "BusinessOwners";
-                                } else if (e.value === 4) {
-                                    return "Location";
-                                } else if (e.value === 5) {
-                                    return "Buildings";
-                                } else if (e.value === 6) {
-                                    return "Success";
-                                } else if (e.value === 7) {
-                                    return ""; // You might want to change this if necessary
-                                } else {
-                                    return "";
-                                }
-                            }
-                        },
-                        data: [
-                            {
-                                type: "column",
-                                dataPoints: dataPoints
-                            }
-                        ]
-                    });
-                    chart.render();
-                })
-                .catch(error => {
-                    console.error('Error fetching top user IDs:', error);
-                });
-        });
-    </script>
-
-}
-
+    @*                       // ---- or ----
+                        // axisY: {
+                        //     title: "",
+                        //     labelFormatter: function (e) {
+                        //         var userId = topUserIds[e.value - 1];
+                        //         var labels = ["Home", "ProductList", "ShoppingCart", "Checkout"];
+                        //         var labelIndex = e.value - 1;
+                        //         if (labels[labelIndex]) {
+                        //             return labels[labelIndex];
+                        //         } else {
+                        //             return "";
+                        //         }
+                        //     }
+                        // }, *@
