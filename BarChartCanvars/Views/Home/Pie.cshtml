@@ -5,13 +5,13 @@
 <div id="chartContainer"></div>
 
 @section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
             var chart = new CanvasJS.Chart("chartContainer", {
                 title: {
-                    text: "Chart of Single User"
+                    text: "Desktop Search Engine Market Share, Jul-2016"
                 },
                 animationEnabled: true,
                 legend: {
@@ -31,11 +31,13 @@
                         showInLegend: true,
                         toolTipContent: "{legendText} {y}%",
                         dataPoints: [
-                            { y: 72.48, legendText: "Submission", label: "Submission" },
-                            { y: 10.39, legendText: "Location", label: "Location" },
-                            { y: 7.78, legendText: "Policy Details Page", label: "Policy Details Page" },
-                            { y: 7.51, legendText: "Buildings Details Page", label: "Buildings Details Page" },
-                            { y: 1.84, legendText: "UW Questions Page", label: "UW Questions Page" }
+                            { y: 72.48, legendText: "Google", label: "Google" },
+                            { y: 10.39, legendText: "Bing", label: "Bing" },
+                            { y: 7.78, legendText: "Yahoo!", label: "Yahoo!" },
+                            { y: 7.14, legendText: "Baidu", label: "Baidu" },
+                            { y: 0.22, legendText: "Ask", label: "Ask" },
+                            { y: 0.15, legendText: "AOL", label: "AOL" },
+                            { y: 1.84, legendText: "Others", label: "Others" }
                         ]
                     }
                 ]

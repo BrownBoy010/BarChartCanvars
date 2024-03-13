@@ -1,0 +1,179 @@
+﻿@{
+    ViewData["Title"] = "Charts";
+}
+
+<!-- Include necessary libraries -->
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+
+<!-- Flex container for the charts -->
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+
+    <div id="topUserInteractionsChartContainer" style="height: 400px; width: 45%;"></div>
+
+    <div id="lineChartContainer" style="height: 400px; width: 45%;"></div>
+
+    <div style="display: flex; flex-wrap: wrap; width: 100%; justify-content: space-between;">
+
+        <div id="areaChartContainer" style="height: 400px; width: 48%;"></div>
+
+        <div id="pieChartContainer" style="height: 400px; width: 48%;"></div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            
+            fetch('@Url.Action("GetTopUserIds", "Home")')
+                .then(response => response.json())
+                .then(data => {
+                    var userInteractions = data;
+                    var dataPoints = [];
+
+                    for (var userId in userInteractions) {
+                        var pageUrl = userInteractions[userId];
+                        var numericValue = 1;
+
+                        switch (pageUrl) {
+                            case 'http://localhost:24019/ProductList':
+                                numericValue = 2;
+                                break;
+                            case 'http://localhost:24019/ShoppingCart':
+                                numericValue = 3;
+                                break;
+                            case 'http://localhost:24019/Checkout/CheckoutError?ErrorCode=10002&Desc=Authentication/Authorization%20Failed&Desc2=You%20do%20not%20have%20permissions%20to%20make%20this%20API%20call':
+                                numericValue = 4;
+                                break;
+                        }
+
+                        dataPoints.push({ label: userId, y: numericValue });
+                    }
+
+                    var chart = new CanvasJS.Chart("topUserInteractionsChartContainer", {
+                        theme: "light2",
+                        animationEnabled: true,
+                        title: {
+                            text: "Top User Interactions"
+                        },
+                        axisX: {
+                            title: ""
+                        },
+                        axisY: {
+                            title: "",
+                            labelFormatter: function (e) {
+                                if (e.value === 1) {
+                                    return "Home";
+                                } else if (e.value === 2) {
+                                    return "ProductList";
+                                } else if (e.value === 3) {
+                                    return "ShoppingCart";
+                                } else if (e.value === 4) {
+                                    return "Checkout";
+                                } else {
+                                    return "";
+                                }
+                            }
+                        },
+                        data: [
+                            {
+                                type: "column",
+                                dataPoints: dataPoints
+                            }
+                        ]
+                    });
+                    chart.render();
+                })
+                .catch(error => {
+                    console.error('Error fetching top user interactions:', error);
+                });
+
+            // Render Line Chart
+            var lineChart = new CanvasJS.Chart("lineChartContainer", {
+                theme: "light2",
+                zoomEnabled: true,
+                animationEnabled: true,
+                title: {
+                    text: "Line Chart using CanvasJS"
+                },
+                subtitles: [
+                    {
+                        text: ""
+                    }
+                ],
+                axisX: {
+                    title: "Pages"
+                },
+                axisY: {
+                    title: "User Counts",
+                    interval: 10
+                },
+                data: [
+                    {
+                        type: "line",
+                        dataPoints: [
+                            { label: "Home", y: 10 },
+                            { label: "Product List", y: 60 },
+                            { label: "Shopping Cart", y: 40 },
+                            { label: "Checkout", y: 50 },
+                            { label: "Success", y: 95 },
+
+                        ]
+                    }
+                ]
+            });
+            lineChart.render();
+
+            // Render Area Chart
+            var areaChart = new CanvasJS.Chart("areaChartContainer", {
+                theme: "light2",
+                animationEnabled: true,
+                title: {
+                    text: "Area Chart using CanvasJS"
+                },
+                data: [{
+                    type: "area",
+                    dataPoints: [
+                        { x: 10, y: 71 },
+                        { x: 20, y: 55 },
+                        { x: 30, y: 50 },
+                        { x: 40, y: 65 },
+                        { x: 50, y: 95 },
+                        { x: 60, y: 68 },
+                        { x: 70, y: 28 },
+                        { x: 80, y: 34 },
+                        { x: 90, y: 14 },
+                        { x: 100, y: 33 }
+                    ]
+                }]
+            });
+            areaChart.render();
+
+            // Render Pie Chart
+            var pieChart = new CanvasJS.Chart("pieChartContainer", {
+                theme: "light2",
+                animationEnabled: true,
+                title: {
+                    text: "Pie Chart using CanvasJS"
+                },
+                data: [{
+                    type: "pie",
+                    startAngle: 240,
+                    yValueFormatString: "##0.00\"%\"",
+                    indexLabel: "{label} {y}",
+                    dataPoints: [
+                        { y: 26, label: "Apple" },
+                        { y: 20, label: "Samsung" },
+                        { y: 18, label: "Xiaomi" },
+                        { y: 12, label: "Huawei" },
+                        { y: 24, label: "Others" }
+                    ]
+                }]
+            });
+            pieChart.render();
+        });
+    </script>
+}

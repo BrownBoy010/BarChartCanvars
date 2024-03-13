@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BarChartCanvars.Models
 {
@@ -17,5 +18,9 @@ namespace BarChartCanvars.Models
         public DateTime? SaveDateTime { get; set; }
         public string? SiteName { get; set; }
         public string? UserAgent { get; set; }
+
+        //alias  name 
+        [NotMapped]
+        public string? USERCOUNT { get; set; }
     }
 }

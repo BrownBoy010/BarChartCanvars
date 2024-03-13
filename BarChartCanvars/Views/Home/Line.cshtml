@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Line";
+}
+
+<!-- Include CanvasJS library -->
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<div id="chartContainer"></div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+           
+            var pageUrlData = @Html.Raw(Json.Serialize(ViewBag.PageUrlData));
+            var countData = @Html.Raw(Json.Serialize(ViewBag.CountData));
+
+            console.log('pageUrlData', pageUrlData);
+            console.log('countData', countData);
+            
+            if (pageUrlData && pageUrlData.length > 0 && countData && countData.length > 0) {
+                
+                var dataPoints = [];
+                for (var i = 0; i < pageUrlData.length; i++) {
+
+                    dataPoints.push({ label: pageUrlData[i], y: countData[i] });
+                }
+                console.log('dataPoints', dataPoints);
+                // Create CanvasJS chart
+                var chart = new CanvasJS.Chart("chartContainer", {
+                    width: 800, // Increase the width to 800 pixels
+                    height: 1000, // Increase the height to 600 pixels
+                    theme: "light2",
+                    animationEnabled: true,
+                    title: {
+                        text: "Page URL vs Count"
+                    },
+                    axisX: {
+                        title: "Page URL"
+                    },
+                    axisY: {
+                        title: "Count"
+                    },
+                    data: [
+                        {
+                            type: "column",
+                            dataPoints: dataPoints
+                        }
+                    ]
+                });
+
+                // Render chart
+                chart.render();
+            } else {
+                console.error("PageUrlData or CountData is null or empty.");
+            }
+        });
+    </script>
+}

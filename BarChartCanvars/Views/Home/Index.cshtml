@@ -16,20 +16,26 @@
                     var dataPoints = [];
 
                     for (var userId in userInteractions) {
+
                         var pageUrl = userInteractions[userId];
                         var numericValue = 1;
 
-                        if (pageUrl === 'http://localhost:24019/ProductList') {
-                            numericValue = 2;
-                        } else if (pageUrl === 'http://localhost:24019/ShoppingCart') {
-                            numericValue = 3;
-                        } else if (pageUrl.startsWith('http://localhost:24019/checkout')) {
-                            numericValue = 4;
+                        switch (pageUrl) {
+                            case 'http://localhost:24019/ProductList':
+                                numericValue = 2;
+                                break;
+                            case 'http://localhost:24019/ShoppingCart':
+                                numericValue = 3;
+                                break;
+                            case 'http://localhost:24019/Checkout/CheckoutError?ErrorCode=10002&Desc=Authentication/Authorization%20Failed&Desc2=You%20do%20not%20have%20permissions%20to%20make%20this%20API%20call':
+                                numericValue = 4;
+                                break;
+                            
                         }
 
                         dataPoints.push({ label: userId, y: numericValue });
                     }
-                    console.log('dataPointsss ', dataPoints);
+                    console.log('dataPoints ', dataPoints);
 
                     var chart = new CanvasJS.Chart("chartContainer", {
                         width: 600,
@@ -55,9 +61,7 @@
                                     return "Checkout";
                                 } else {
                                     return "";
-                                }
-                                // var pageNames = ["Home", "ProductList", "ShoppingCart", "Checkout"];
-                                // return pageNames[e.value - 1];
+                                }                                
                             }
                         },
                         data: [
@@ -119,9 +123,9 @@
                     console.log('length : ', data.length);
                     console.log('length : ', topUserIds.length);
                     console.log('topUserIds ', topUserIds);
-                   
+
                     var dataPoints = [];
-                    for (var i = 0; i < topUserIds.length; i++) {                           
+                    for (var i = 0; i < topUserIds.length; i++) {
                         var userId = toptopUserIds[i].userId;
                         var pageUrl = toptopUserIds[i].pageUrl;
 
@@ -135,7 +139,7 @@
                     // for (var i = 0; i < topUserIds.length; i++) {
                     //     dataPoints.push({ label: topUserIds[i + 1], y: topUserIds[i] });
                     // }
-                    
+
                     var chart = new CanvasJS.Chart("chartContainer", {
                         width: 600,
                         height: 400,
@@ -259,17 +263,3 @@
     </script>
 } *@
 
-    @*                       // ---- or ----
-                        // axisY: {
-                        //     title: "",
-                        //     labelFormatter: function (e) {
-                        //         var userId = topUserIds[e.value - 1];
-                        //         var labels = ["Home", "ProductList", "ShoppingCart", "Checkout"];
-                        //         var labelIndex = e.value - 1;
-                        //         if (labels[labelIndex]) {
-                        //             return labels[labelIndex];
-                        //         } else {
-                        //             return "";
-                        //         }
-                        //     }
-                        // }, *@

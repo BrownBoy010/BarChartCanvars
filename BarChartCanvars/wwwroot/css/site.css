@@ -16,3 +16,19 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* Custom CSS for the sidebar */
+#sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: -250px; /* Initial position off-screen */
+    width: 250px;
+    background-color: #f8f9fa;
+    transition: left 0.3s ease; /* Smooth sliding effect */
+    z-index: 1;
+}
+
+#content {
+    margin-left: 250px; /* Adjust content margin to fit sidebar */
+}
