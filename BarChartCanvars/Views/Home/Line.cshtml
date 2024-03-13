@@ -13,7 +13,6 @@
             var pageUrlData = @Html.Raw(Json.Serialize(ViewBag.PageUrlData));
             var countData = @Html.Raw(Json.Serialize(ViewBag.CountData));
 
-            console.log('pageUrlData', pageUrlData);
             console.log('countData', countData);
             
             if (pageUrlData && pageUrlData.length > 0 && countData && countData.length > 0) {
@@ -21,13 +20,13 @@
                 var dataPoints = [];
                 for (var i = 0; i < pageUrlData.length; i++) {
 
-                    dataPoints.push({ label: pageUrlData[i], y: countData[i] });
+                    var customLabel = getCustomLabel(pageUrlData[i]);
+                    dataPoints.push({ label: customLabel, y: countData[i] });
                 }
                 console.log('dataPoints', dataPoints);
-                // Create CanvasJS chart
                 var chart = new CanvasJS.Chart("chartContainer", {
-                    width: 800, // Increase the width to 800 pixels
-                    height: 1000, // Increase the height to 600 pixels
+                    width: 600,
+                    height: 400,
                     theme: "light2",
                     animationEnabled: true,
                     title: {
@@ -46,11 +45,27 @@
                         }
                     ]
                 });
-
-                // Render chart
                 chart.render();
             } else {
                 console.error("PageUrlData or CountData is null or empty.");
+            }
+            function getCustomLabel(originalLabel) {
+
+                if (originalLabel === "http://localhost:24019/") {
+                    return "Home";
+                } 
+                else if (originalLabel === "http://localhost:24019/ProductList") {
+                    return "Product List";
+                }
+                else if (originalLabel === "http://localhost:24019/Checkout/CheckoutError?ErrorCode=10002&Desc=Authentication/Authorization%20Failed&Desc2=You%20do%20not%20have%20permissions%20to%20make%20this%20API%20call") {
+                    return "Checkout";
+                }
+                else if (originalLabel === "http://localhost:24019/ShoppingCart") {
+                    return "Shopping Cart";
+                } 
+                else {
+                    return originalLabel; 
+                }
             }
         });
     </script>

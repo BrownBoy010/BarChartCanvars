@@ -54,13 +54,13 @@ namespace BarChartCanvars.Controllers
         public ActionResult Line()
         {
             var barChartData = _context.CurrentInteractions
-    .Where(ci => ci.PageUrl != "http://localhost:24019/Account/Login" && ci.PageUrl != "http://localhost:24019/Account/Register")
-    .GroupBy(ci => ci.PageUrl)
-    .Select(group => new CountData
-    {
-        PageUrl = group.Key,
-        Count = group.Count()
-    })
+                .Where(ci => ci.PageUrl != "http://localhost:24019/Account/Login" && ci.PageUrl != "http://localhost:24019/Account/Register")
+                .GroupBy(ci => ci.PageUrl)
+                .Select(group => new CountData
+                {
+                    PageUrl = group.Key,
+                    Count = group.Count()
+                })
                 .ToList();
 
             var pageUrlArray = barChartData.Select(item => item.PageUrl).ToArray();
