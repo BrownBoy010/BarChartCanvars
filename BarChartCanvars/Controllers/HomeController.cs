@@ -1,6 +1,8 @@
 ﻿using BarChartCanvars.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace BarChartCanvars.Controllers
@@ -51,16 +53,17 @@ namespace BarChartCanvars.Controllers
             public string PageUrl { get; set; }
         }
 
-        public ActionResult Line()
+        public ActionResult PageURLvsCount()
         {
             var barChartData = _context.CurrentInteractions
                 .Where(ci => ci.PageUrl != "http://localhost:24019/Account/Login" && ci.PageUrl != "http://localhost:24019/Account/Register")
                 .GroupBy(ci => ci.PageUrl)
-                .Select(group => new CountData
+                .Select(group => new 
                 {
                     PageUrl = group.Key,
                     Count = group.Count()
                 })
+                .OrderByDescending(data => data.Count)
                 .ToList();
 
             var pageUrlArray = barChartData.Select(item => item.PageUrl).ToArray();
@@ -72,11 +75,31 @@ namespace BarChartCanvars.Controllers
             return View();
         }
 
-
-        public class CountData
+        public ActionResult LastVisit()
         {
-            public int Count { get; set; }
-            public string PageUrl { get; set; }
+            var query = from interaction in _context.CurrentInteractions
+                        where _context.CurrentInteractions
+                                .GroupBy(c => c.UserId)
+                                .Select(g => g.Max(c => c.SaveDateTime))
+                                .Contains(interaction.SaveDateTime)
+                        group interaction by interaction.PageUrl into g
+                        orderby g.Count() descending
+                        select new
+                        {
+                            PageUrl = g.Key,
+                            UserCount = g.Count()
+                        };
+
+
+
+            var PageUrlArray = query.Select(data => data.PageUrl).ToArray();
+            var UserCountArray = query.Select(data => data.UserCount).ToArray();
+            
+
+            ViewBag.PageUrlData = PageUrlArray;
+            ViewBag.CountData = UserCountArray;
+
+            return View();
         }
 
 
@@ -104,42 +127,6 @@ namespace BarChartCanvars.Controllers
             return View();
         }
 
-        //public IActionResult Privacy()
-        //{
-        //    var privacyPageCounts = _context.CurrentInteractions.FromSqlRaw("exec dbo.getNavigatedUserCount").ToList();
-
-        //    List<PageCount> privacyPageList = new List<PageCount>();
-        //    foreach (var interaction in privacyPageCounts)
-        //    {
-        //        if (!string.IsNullOrWhiteSpace(interaction.USERCOUNT) && !string.IsNullOrWhiteSpace(interaction.PageUrl))
-        //        {
-        //            var userCountValue = interaction.USERCOUNT;
-
-        //            var pageCount = new PageCount
-        //            {
-        //                USERCOUNT = userCountValue,
-        //                PageUrl = interaction.PageUrl
-        //            };
-        //            privacyPageList.Add(pageCount);
-        //        }
-        //    }
-
-        //    var privacyPageCountsDict = new Dictionary<string, string>();
-        //    foreach (var pageCount in privacyPageList)
-        //    {
-        //        privacyPageCountsDict.Add(pageCount.USERCOUNT, pageCount.PageUrl);
-        //    }
-
-        //    return Json(privacyPageCountsDict);
-        //}
-
-
-        public class PageCount
-        {
-            public string USERCOUNT { get; set; } = string.Empty;
-            public string PageUrl { get; set; }
-        }
-
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -152,15 +139,3 @@ namespace BarChartCanvars.Controllers
 
 }
 
-
-
-//.GroupBy(i => i.UserId)
-//.Select(group => new
-//{
-//    UserId = group.Key,
-//    MaxSaveDateTime = group.Max(i => i.SaveDateTime)
-//})
-//.OrderByDescending(group => group.MaxSaveDateTime)
-//.Take(4)
-//.Select(group => group.UserId)
-//.ToList();

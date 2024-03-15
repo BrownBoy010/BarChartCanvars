@@ -3,7 +3,6 @@
 }
 
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-
 <div id="chartContainer"></div>
 
 @section Scripts {
@@ -16,23 +15,20 @@
                     var dataPoints = [];
 
                     for (var userId in userInteractions) {
-
                         var pageUrl = userInteractions[userId];
                         var numericValue = 1;
 
                         switch (pageUrl) {
                             case 'http://localhost:24019/ProductList':
                                 numericValue = 2;
-                                break;
+                            break;
                             case 'http://localhost:24019/ShoppingCart':
                                 numericValue = 3;
-                                break;
+                            break;
                             case 'http://localhost:24019/Checkout/CheckoutError?ErrorCode=10002&Desc=Authentication/Authorization%20Failed&Desc2=You%20do%20not%20have%20permissions%20to%20make%20this%20API%20call':
                                 numericValue = 4;
-                                break;
-                            
+                            break;                            
                         }
-
                         dataPoints.push({ label: userId, y: numericValue });
                     }
                     console.log('dataPoints ', dataPoints);
@@ -77,7 +73,6 @@
                     console.error('Error fetching top user interactions:', error);
                 });
         });
-
     </script>
 }
 
