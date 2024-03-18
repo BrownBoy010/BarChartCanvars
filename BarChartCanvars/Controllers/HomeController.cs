@@ -90,8 +90,6 @@ namespace BarChartCanvars.Controllers
                             UserCount = g.Count()
                         };
 
-
-
             var PageUrlArray = query.Select(data => data.PageUrl).ToArray();
             var UserCountArray = query.Select(data => data.UserCount).ToArray();
             
