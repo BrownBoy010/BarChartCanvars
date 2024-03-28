@@ -20,6 +20,7 @@ namespace BarChartCanvars.Models
         public virtual DbSet<DeviceDetail> DeviceDetails { get; set; } = null!;
         public virtual DbSet<InterationDatum> InterationData { get; set; } = null!;
         public virtual DbSet<PageEventDatum> PageEventData { get; set; } = null!;
+        public virtual DbSet<UserLoginDetail> UserLoginDetails { get; set; }
         public virtual DbSet<WhoIsInformation> WhoIsInformations { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

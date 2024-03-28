@@ -1,0 +1,215 @@
+﻿@{
+    ViewBag.Title = "last visit";
+}
+
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<div id="chartContainer"></div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+
+    <div id="chartContainer" style="height: 400px; width: 45%;"></div>
+
+    <div id="errorChartContainer" style="height: 400px; width: 45%;"></div>
+
+    <div id="SuccessChartContainer" style="height: 400px; width: 45%;"></div>
+
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            var userAgent = @Html.Raw(Json.Serialize(ViewBag.UserAgentData));
+            var userAgentCount = @Html.Raw(Json.Serialize(ViewBag.UserAgentCountData));
+
+            var errorUserAgent = @Html.Raw(Json.Serialize(ViewBag.ErrorUserAgentData));
+            var errorAgentCount = @Html.Raw(Json.Serialize(ViewBag.ErrorAgentCountData));
+            var errorUserCount = @Html.Raw(Json.Serialize(ViewBag.ErrorUserCountData));
+
+            var successUserAgent = @Html.Raw(Json.Serialize(ViewBag.SuccessUserAgentData));
+            var successAgentCount = @Html.Raw(Json.Serialize(ViewBag.SuccessAgentCountData));
+            var successUserCount = @Html.Raw(Json.Serialize(ViewBag.SuccessUserCountData));
+
+            if (userAgent && userAgent.length > 0 && userAgentCount && userAgentCount.length > 0 &&
+                errorUserAgent && errorUserAgent.length > 0 && errorAgentCount && errorAgentCount.length > 0 && errorUserCount && errorUserCount.length > 0 &&
+                successUserAgent && successUserAgent.length > 0 && successAgentCount && successAgentCount.length > 0 && successUserCount && successUserCount.length > 0) {
+
+                var dataPoints = [];
+                for (var i = 0; i < userAgent.length; i++) {
+                    dataPoints.push({ label: userAgent[i], y: userAgentCount[i] });
+                }
+                console.log('dataPoints', dataPoints);
+                var chart = new CanvasJS.Chart("chartContainer", {
+                    width: 600,
+                    height: 400,
+                    theme: "light2",
+                    animationEnabled: true,
+                    title: {
+                        text: "Browser Count"
+                    },
+                    axisX: {
+                        title: "Agent",
+                        labelFontSize: 10
+
+                    },
+                    axisY: {
+                        title: "User Count",
+                        labelFontSize: 10
+                    },
+                    data: [
+                        {
+                            type: "column",
+                            dataPoints: dataPoints
+                        }
+                    ]
+                });
+                chart.render();
+
+
+                //Error Graph
+                var errorDataPoints = [];
+                for (var i = 0; i < errorUserAgent.length; i++) {
+                    errorDataPoints.push({ label: errorUserAgent[i], y: errorAgentCount[i], extra: errorUserCount[i] });
+                }
+                console.log('errorDataPoints', errorDataPoints);
+                var errorChart = new CanvasJS.Chart("errorChartContainer", {
+                    width: 600,
+                    height: 400,
+                    theme: "light2",
+                    animationEnabled: true,
+                    title: {
+                        text: "Error Agent Count"
+                    },
+                    axisX: {
+                        title: "Error Agent",
+                        labelFontSize: 10
+
+                    },
+                    axisY: {
+                        title: "Error User Count",
+                        labelFontSize: 10
+                    },
+                    data: [
+                        {
+                            type: "column",
+                            toolTipContent: "Count: {y}<br>User Count: {extra}",
+                            dataPoints: errorDataPoints
+                        }
+                    ]
+                });
+                errorChart.render();
+
+                //Success Graph
+                var successDataPoints = [];
+                for (var i = 0; i < successUserAgent.length; i++) {
+                    successDataPoints.push({ label: successUserAgent[i], y: successAgentCount[i], extra: successUserCount[i] });
+                }
+                console.log('successDataPoints', successDataPoints);
+                var successChart = new CanvasJS.Chart("SuccessChartContainer", {
+                    width: 600,
+                    height: 400,
+                    theme: "light2",
+                    animationEnabled: true,
+                    title: {
+                        text: "Success Agent Count"
+                    },
+                    axisX: {
+                        title: "Success Agent",
+                        labelFontSize: 10
+
+                    },
+                    axisY: {
+                        title: "Success User Count",
+                        labelFontSize: 10
+                    },
+                    data: [
+                        {
+                            type: "column",
+                            toolTipContent: "Count: {y}<br>User Count: {extra}",
+                            dataPoints: successDataPoints
+                        }
+                    ]
+                });
+                successChart.render();
+            }
+            else {
+                console.error("Data is null or empty.");
+            }
+        });
+    </script>
+}
+
+@* 
+@{
+    ViewBag.Title = "Last Visit";
+}
+
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<div id="chartContainer" style="height: 400px; width: 100%;"></div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            var userAgent = @Html.Raw(Json.Serialize(ViewBag.UserAgentData));
+            var userAgentCount = @Html.Raw(Json.Serialize(ViewBag.UserAgentCountData));
+
+            var errorUserAgent = @Html.Raw(Json.Serialize(ViewBag.ErrorUserAgentData));
+            var errorAgentCount = @Html.Raw(Json.Serialize(ViewBag.ErrorAgentCountData));
+            var errorUserCount = @Html.Raw(Json.Serialize(ViewBag.ErrorUserCountData));
+
+            var successUserAgent = @Html.Raw(Json.Serialize(ViewBag.SuccessUserAgentData));
+            var successAgentCount = @Html.Raw(Json.Serialize(ViewBag.SuccessAgentCountData));
+            var successUserCount = @Html.Raw(Json.Serialize(ViewBag.SuccessUserCountData));
+
+            var dataPoints = [];
+            for (var i = 0; i < userAgent.length; i++) {
+                var errorIndex = errorUserAgent.indexOf(userAgent[i]);
+                var successIndex = successUserAgent.indexOf(userAgent[i]);
+                var errorCount = errorIndex !== -1 ? errorAgentCount[errorIndex] : 0;
+                var errorUserCountValue = errorIndex !== -1 ? errorUserCount[errorIndex] : 0;
+                var successCount = successIndex !== -1 ? successAgentCount[successIndex] : 0;
+                var successUserCountValue = successIndex !== -1 ? successUserCount[successIndex] : 0;
+
+                dataPoints.push({
+                    label: userAgent[i],
+                    y: userAgentCount[i],
+                    errorCount: errorCount,
+                    errorUserCount: errorUserCountValue,
+                    successCount: successCount,
+                    successUserCount: successUserCountValue
+                });
+            }
+
+            console.log('dataPoints', dataPoints);
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                width: 800,
+                height: 600,
+                theme: "light2",
+                animationEnabled: true,
+                title: {
+                    text: "Agent Count"
+                },
+                axisX: {
+                    title: "Agent",
+                    labelFontSize: 10,
+                    interval: 1
+                },
+                axisY: {
+                    title: "User Count",
+                    labelFontSize: 10
+                },
+                data: [
+                    {
+                        type: "column",
+                        toolTipContent: "{label}: {y} <br> Error Count: {errorCount} <br> Error User Count: {errorUserCount} <br> Success Count: {successCount} <br> Success User Count: {successUserCount}",
+                        dataPoints: dataPoints
+                    }
+                ]
+            });
+
+            chart.render();
+        });
+    </script>
+}
+ *@

@@ -19,8 +19,8 @@
                 var dataPoints = [];
                 for (var i = 0; i < pageUrlData.length; i++) {
 
-                    var customLabel = getCustomLabel(pageUrlData[i]);
-                    dataPoints.push({ label: customLabel, y: countData[i] });
+                    //var customLabel = getCustomLabel(pageUrlData[i]);
+                    dataPoints.push({ label: pageUrlData[i], y: countData[i] });
                 }
                 console.log('dataPoints', dataPoints);
                 var chart = new CanvasJS.Chart("chartContainer", {
@@ -49,24 +49,24 @@
             else {
                 console.error("PageUrlData or CountData is null or empty.");
             }
-            function getCustomLabel(originalLabel) {
+            // function getCustomLabel(originalLabel) {
 
-                if (originalLabel === "http://localhost:24019/") {
-                    return "Home";
-                } 
-                else if (originalLabel === "http://localhost:24019/ProductList") {
-                    return "Product List";
-                }
-                else if (originalLabel === "http://localhost:24019/Checkout/CheckoutError?ErrorCode=10002&Desc=Authentication/Authorization%20Failed&Desc2=You%20do%20not%20have%20permissions%20to%20make%20this%20API%20call") {
-                    return "Checkout";
-                }
-                else if (originalLabel === "http://localhost:24019/ShoppingCart") {
-                    return "Shopping Cart";
-                } 
-                else {
-                    return originalLabel; 
-                }
-            }
+            //     if (originalLabel === "http://localhost:24019/") {
+            //         return "Homee";
+            //     } 
+            //     else if (originalLabel === "http://localhost:24019/ProductList") {
+            //         return "Product List";
+            //     }
+            //     else if (originalLabel === "http://localhost:24019/Checkout/CheckoutError?ErrorCode=10002&Desc=Authentication/Authorization%20Failed&Desc2=You%20do%20not%20have%20permissions%20to%20make%20this%20API%20call") {
+            //         return "Checkout";
+            //     }
+            //     else if (originalLabel === "http://localhost:24019/ShoppingCart") {
+            //         return "Shopping Cart";
+            //     } 
+            //     else {
+            //         return originalLabel; 
+            //     }
+            //}
         });
     </script>
 }

@@ -1,0 +1,134 @@
+﻿@{
+    ViewBag.Title = "DashBoard Charts";
+}
+
+<!-- Include necessary libraries -->
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+
+<!-- Flex container for the charts -->
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+
+    <div id="userDropOffChartContainer" style="height: 400px; width: 45%;"></div>
+
+    <div id="errorChartContainer" style="height: 400px; width: 45%;"></div>
+
+    <div id="pageHitChartContainer" style="height: 500px; width: 100%;"></div>
+
+</div>
+
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var dateData = @Html.Raw(Json.Serialize(ViewBag.DateData));
+            var countData = @Html.Raw(Json.Serialize(ViewBag.CountData));
+
+            if (dateData && dateData.length > 0 && countData && countData.length > 0) {
+                var errorDataPoints = [];
+                for (var i = 0; i < dateData.length; i++) {
+                    errorDataPoints.push({ label: dateData[i], y: countData[i] });
+                }
+
+                var errorChart = new CanvasJS.Chart("errorChartContainer", {
+                    theme: "light2",
+                    animationEnabled: true,
+                    title: {
+                        text: "Error Count"
+                    },
+                    axisX: {
+                        title: "Date",
+                        labelFontSize: 10
+                    },
+                    axisY: {
+                        title: "Error Count",
+                        labelFontSize: 10
+                    },
+                    data: [
+                        {
+                            type: "column",
+                            dataPoints: errorDataPoints
+                        }
+                    ]
+                });
+                errorChart.render();
+            } else {
+                console.error("Error: DateData or CountData is null or empty.");
+            }
+
+            // Configuration for the second chart (Last User Drop-Off)
+            var pageUrlData = @Html.Raw(Json.Serialize(ViewBag.PageUrlData));
+            var userCountData = @Html.Raw(Json.Serialize(ViewBag.UserCountData));
+
+            if (pageUrlData && pageUrlData.length > 0 && userCountData && userCountData.length > 0) {
+                var userDropOffDataPoints = [];
+                for (var i = 0; i < pageUrlData.length; i++) {
+                    userDropOffDataPoints.push({ label: pageUrlData[i], y: userCountData[i] });
+                }
+
+                var userDropOffChart = new CanvasJS.Chart("userDropOffChartContainer", {
+                    theme: "light2",
+                    animationEnabled: true,
+                    title: {
+                        text: "User Drops"
+                    },
+                    axisX: {
+                        title: "Page URL",
+                        labelFontSize: 10
+                    },
+                    axisY: {
+                        title: "User Count",
+                        labelFontSize: 10
+                    },
+                    data: [
+                        {
+                            type: "column",
+                            dataPoints: userDropOffDataPoints
+                        }
+                    ]
+                });
+                userDropOffChart.render();
+            } else {
+                console.error("Error: PageUrlData or UserCountData is null or empty.");
+            }
+
+
+            // Configuration for the third chart (Pages Hit Count)
+            var pageUrlData1 = @Html.Raw(Json.Serialize(ViewBag.PageUrlData1));
+            var countData1 = @Html.Raw(Json.Serialize(ViewBag.CountData1));
+
+            if (pageUrlData1 && pageUrlData1.length > 0 && countData1 && countData1.length > 0) {
+                var dataPoints = [];
+                for (var i = 0; i < pageUrlData1.length; i++) {
+                    dataPoints.push({ label: pageUrlData1[i], y: countData1[i] });
+                }
+
+                var chart = new CanvasJS.Chart("pageHitChartContainer", {
+                    theme: "light2",
+                    animationEnabled: true,
+                    title: {
+                        text: "Page Hit Count"
+                    },
+                    axisX: {
+                        title: "Page Name",
+                        labelFontSize: 10
+                    },
+                    axisY: {
+                        title: "Hit Count",
+                        labelFontSize: 10
+                    },
+                    data: [
+                        {
+                            type: "column",
+                            dataPoints: dataPoints
+                        }
+                    ]
+                });
+                chart.render();
+            } else {
+                console.error("Error: PageUrlData or CountData is null or empty.");
+            }
+        });
+    </script>
+}

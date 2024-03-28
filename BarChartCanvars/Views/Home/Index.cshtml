@@ -19,19 +19,41 @@
                         var numericValue = 1;
 
                         switch (pageUrl) {
-                            case 'http://localhost:24019/ProductList':
+                            case 'Businessowners/Details':
                                 numericValue = 2;
                             break;
-                            case 'http://localhost:24019/ShoppingCart':
+                            case 'Businessowners/Coverages':
                                 numericValue = 3;
                             break;
-                            case 'http://localhost:24019/Checkout/CheckoutError?ErrorCode=10002&Desc=Authentication/Authorization%20Failed&Desc2=You%20do%20not%20have%20permissions%20to%20make%20this%20API%20call':
+                            case 'Businessowners/Additional Coverages':
                                 numericValue = 4;
-                            break;                            
+                            break;
+                            case 'Locations':
+                                numericValue = 5;
+                                break;
+                            case 'State Specific Info/Coverages':
+                                numericValue = 6;
+                                break;
+                            case 'State Specific Info/Additional Coverages':
+                                numericValue = 7;
+                                break;
+
+                            case 'Buildings/Classifications':
+                                numericValue = 4;
+                                break;
+                            case 'Blankets':
+                                numericValue = 5;
+                                break;
+                            case 'Mortgagees':
+                                        numericValue = 6;
+                                break;
+                            case 'UW Questions':
+                                numericValue = 7;
+                                break;
                         }
                         dataPoints.push({ label: userId, y: numericValue });
                     }
-                    console.log('dataPoints ', dataPoints);
+                    console.log('dataPoints', dataPoints);
 
                     var chart = new CanvasJS.Chart("chartContainer", {
                         width: 600,
@@ -48,14 +70,29 @@
                             title: "Page URL",
                             labelFormatter: function (e) {
                                 if (e.value === 1) {
-                                    return "Home";
+                                    return "Policy Details";
                                 } else if (e.value === 2) {
-                                    return "ProductList";
+                                    return "Businessowners/Details";
                                 } else if (e.value === 3) {
-                                    return "ShoppingCart";
+                                    return "Businessowners/Coverages";
                                 } else if (e.value === 4) {
-                                    return "Checkout";
-                                } else {
+                                    return "Businessowners/Additional Coverages";
+                                } else if (e.value === 5) {
+                                    return "Locations";
+                                } else if (e.value === 6) {
+                                    return "State Specific Info/Coverages";
+                                } else if (e.value === 7) {
+                                    return "State Specific Info/Additional Coverages";
+                                } else if (e.value === 4) {
+                                    return "Buildings/Classifications";
+                                } else if (e.value === 5) {
+                                    return "Blankets";
+                                } else if (e.value === 6) {
+                                    return "Mortgagees";
+                                } else if (e.value === 7) {
+                                    return "UW Questions";
+                                }
+                                else {
                                     return "";
                                 }                                
                             }

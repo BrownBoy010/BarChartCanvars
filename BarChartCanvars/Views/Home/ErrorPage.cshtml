@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "last visit";
+    ViewBag.Title = "Error Page";
 }
 
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
@@ -9,16 +9,17 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
-            var pageUrlData = @Html.Raw(Json.Serialize(ViewBag.PageUrlData));
+            var dateData = @Html.Raw(Json.Serialize(ViewBag.DateData));
             var countData = @Html.Raw(Json.Serialize(ViewBag.CountData));
 
             console.log('countData', countData);
 
-            if (pageUrlData && pageUrlData.length > 0 && countData && countData.length > 0) {
+            if (dateData && dateData.length > 0 && countData && countData.length > 0) {
 
                 var dataPoints = [];
-                for (var i = 0; i < pageUrlData.length; i++) {
-                    dataPoints.push({ label: pageUrlData[i], y: countData[i] });
+                for (var i = 0; i < dateData.length; i++) {
+
+                    dataPoints.push({ label: dateData[i], y: countData[i] });
                 }
                 console.log('dataPoints', dataPoints);
                 var chart = new CanvasJS.Chart("chartContainer", {
@@ -27,15 +28,15 @@
                     theme: "light2",
                     animationEnabled: true,
                     title: {
-                        text: "User Drops"
+                        text: "Error Count"
                     },
                     axisX: {
-                        title: "Page URL",
+                        title: "Date",
                         labelFontSize: 10
 
                     },
                     axisY: {
-                        title: "User Count",
+                        title: "Error Count",
                         labelFontSize: 10
                     },
                     data: [

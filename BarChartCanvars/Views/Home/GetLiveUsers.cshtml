@@ -1,0 +1,47 @@
+﻿@model IEnumerable<BarChartCanvars.Models.UserLoginDetail>
+
+@{
+    ViewData["Title"] = "GetLiveUsers";
+}
+
+<h1>Live Users</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Login)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Logout)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Login)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Logout)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    setInterval(function () {
+        location.reload();
+    }, 5000); // Refresh every 5 seconds (5000 milliseconds)
+</script>
