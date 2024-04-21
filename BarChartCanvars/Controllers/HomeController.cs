@@ -143,13 +143,13 @@ namespace BarChartCanvars.Controllers
                 ModifiedUserAgent = interaction.UserAgent == "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0" ? "Edge" :
                                 (interaction.UserAgent == "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" ? "Chrome" : interaction.UserAgent)
             })
-        .Distinct()
-        .GroupBy(x => x.ModifiedUserAgent)
-        .Select(g => new
-        {
-            UserAgent = g.Key,
-            UserAgentCount = g.Count()
-        });
+            .Distinct()
+            .GroupBy(x => x.ModifiedUserAgent)
+            .Select(g => new
+            {
+                UserAgent = g.Key,
+                UserAgentCount = g.Count()
+            });
 
             var UserAgentArray = result.Select(data => data.UserAgent).ToArray();
             var UserAgentCountArray = result.Select(data => data.UserAgentCount).ToArray();
@@ -215,12 +215,9 @@ namespace BarChartCanvars.Controllers
         }
         public ActionResult DashBoard()
         {
-            DateTime LastFiveDays = DateTime.Today.AddDays(-4);
-
             var query = from interaction in _context.CurrentInteractions
                         where interaction.PageUrl == "error" &&
-                              interaction.SaveDateTime.HasValue &&
-                              interaction.SaveDateTime.Value.Date >= LastFiveDays
+                              interaction.SaveDateTime.HasValue
                         group interaction by interaction.SaveDateTime.Value.Date into g
                         select new
                         {
